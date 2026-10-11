@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Core
 {
     /// <summary>
-    /// Infrastructure 层启动注册器 — 在游戏启动时注册基础服务，供 Domain 层使用。
+    /// Infrastructure 层启动注册器 — 在游戏启动时注册基础服务。
     /// Module 级别的服务注册由各 Module 的 Bootstrap 类负责。
     /// </summary>
     public static class InfrastructureRegistrar

@@ -17,8 +17,23 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 3cb6253d7cc193047915464d9e6a91bb
   m_SerializeEntries:
+  - m_GUID: 07969302251f48c438f80d352cff1320
+    m_Address: Assets/_Project/Addressables/UI/Cards/Card_BloodSacrifice.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b7a2ae8c11ed9e40a3c124df80cac24
+    m_Address: Assets/_Project/Addressables/UI/Cards/Card_RustTrap.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 561e777d17020c3489a348ddab73945e
     m_Address: Local_Lua_Main
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f6d01f8f209d4340a23e5d8a84fba79
+    m_Address: Assets/_Project/Addressables/UI/Cards/Card_FrenzyEcho.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -39,6 +54,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c58585d17b3f68449a8bc5908e95b35a
     m_Address: Local_GameCursor
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d672b4201da15444eaf57060d89680ec
+    m_Address: Assets/_Project/Addressables/UI/Cards/Card_PhantomDodge.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d73c7e27de6e2a6488552d710fe6714c
+    m_Address: Assets/_Project/Addressables/UI/Cards/Card_BoneShatterStrike.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -9,7 +9,7 @@ local RuneEffect = {
     ["%防御力"]     = "AddDefensePower",
     ["%攻击速度"]   = "ReduceAttackInterval",
 
-    -- 热更新可新增的效果类型 ↓
+    -- 热更新可新增的效果类型 
     -- ["%移动速度"] = "AddMoveSpeed",
     -- ["%生命偷取"] = "AddLifeSteal",
     -- ["%生命恢复"] = "AddHealthRecover",

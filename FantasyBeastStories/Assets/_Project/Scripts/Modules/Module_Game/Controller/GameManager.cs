@@ -20,7 +20,7 @@ namespace Controllers.Game
     public class GameManager : MonoBehaviour, ISpawnPointService
     {
         private static GameManager _instance;
-        
+
 
         public int sceneIndex = 2;
         public bool isReady = false;
@@ -86,7 +86,7 @@ namespace Controllers.Game
 
         private void Update()
         {
-            UpdateCursorVisibility();
+            // UpdateCursorVisibility();
         }
 
         private void UpdateCursorVisibility()

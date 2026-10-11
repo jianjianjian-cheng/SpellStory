@@ -95,6 +95,10 @@ namespace Controllers.Network
 
       PhotonNetwork.AutomaticallySyncScene = true;
       UnityEngine.Application.runInBackground = true;
+
+      //离线模式不能调用ConnectUsingSettings
+      if (PhotonNetwork.OfflineMode) return;
+
       PhotonNetwork.ConnectUsingSettings();
     }
 

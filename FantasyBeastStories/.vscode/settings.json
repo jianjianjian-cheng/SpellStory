@@ -56,5 +56,7 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "FantasyBeastStories.sln"
+    "dotnet.defaultSolution": "FantasyBeastStories.sln",
+    "trae.tab.enableRename": false,
+    "trae.tab.enableAutoImport": false
 }
