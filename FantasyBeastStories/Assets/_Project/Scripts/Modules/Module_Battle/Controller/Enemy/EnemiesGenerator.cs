@@ -9,7 +9,6 @@ using Core.Network;
 using Controllers.Time;
 using Controllers.Network;
 using Controllers.Player;
-using Controllers.Battle;
 
 namespace Controllers.Battle
 {
@@ -102,6 +101,8 @@ namespace Controllers.Battle
             }
             if (canGenorate)
             {
+                if (!AnyPlayerNear(transform.position))
+                    return;   // 附近没玩家：刷怪点不计时（AOI 生成门）
                 UpdateSpawnInterval();
 
                 if (timer >= spawnInterval)
@@ -114,6 +115,24 @@ namespace Controllers.Battle
                     timer += UnityEngine.Time.deltaTime;
                 }
             }
+        }
+
+        private const float SpawnNearRadius = 50f;
+
+        private bool AnyPlayerNear(Vector3 pos)
+        {
+            var pm = ServiceLocator.Get<PlayerManager>();
+            if (pm == null) return true;
+            var list = pm.ActivePlayerObjects;
+            if (list == null || list.Count == 0) return true;
+
+            foreach (var go in list)
+            {
+                if (go == null) continue;
+                if (Vector3.Distance(pos, go.transform.position) <= SpawnNearRadius)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>

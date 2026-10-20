@@ -76,6 +76,13 @@ namespace Controllers.Network
     private readonly Dictionary<string, HashSet<GameObject>> _activeObjects = new();
     private bool photonReady = false;
 
+    /// <summary>MonsterSimCore 读活跃怪物用</summary>
+    public Dictionary<string, HashSet<GameObject>> ActiveObjects => _activeObjects;
+
+    /// <summary>怪物池（预制体带 EnemyBase）→ 本地实例化，不进 Photon</summary>
+    private bool IsMonsterPool(string poolName) =>
+        prefabs.TryGetValue(poolName, out var prefab) && prefab.GetComponentInChildren<EnemyBase>(true) != null;
+
     // ===================== 初始化 =====================
     void Start()
     {
@@ -153,7 +160,7 @@ namespace Controllers.Network
       if (rotation == default)
         rotation = Quaternion.identity;
 
-      if (EventChannelLocator.MainContainer.gameSettings.IsTest)
+      if (EventChannelLocator.MainContainer.gameSettings.IsTest || IsMonsterPool(poolName))
         return GetFromPool(poolName, position, rotation);
 
       if (!PhotonNetwork.IsMasterClient)
@@ -237,7 +244,7 @@ namespace Controllers.Network
 
     private void DespawnNow(string poolName, GameObject obj)
     {
-      if (EventChannelLocator.MainContainer.gameSettings.IsTest)
+      if (EventChannelLocator.MainContainer.gameSettings.IsTest || IsMonsterPool(poolName))
       {
         // 测试模式：直接本地回池
         ReturnToPool(poolName, obj);
@@ -320,7 +327,7 @@ namespace Controllers.Network
         Debug.Log($"[NetworkPool] ReturnToPool: {poolName} (name={obj.name}) notify={notify}");
 
       // 重置对应组件状态
-      obj.GetComponent<EnemyBase>()?.ResetState();
+      obj.GetComponentInChildren<EnemyBase>()?.ResetState();
       obj.GetComponent<DropItemBase>()?.ResetState();
       obj.SetActive(false);
       obj.name = poolName; // 统一标记名称，方便 FindPoolName 匹配
@@ -413,7 +420,7 @@ namespace Controllers.Network
 
     void OnDestroy()
     {
-            ServiceLocator.Unregister<NetworkObjectPoolManager>();
+      ServiceLocator.Unregister<NetworkObjectPoolManager>();
       foreach (var pool in pools.Values)
         while (pool.Count > 0)
         {

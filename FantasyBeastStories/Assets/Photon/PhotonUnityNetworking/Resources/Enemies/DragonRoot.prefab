@@ -11,13 +11,10 @@ GameObject:
   - component: {fileID: 4576990487535738608}
   - component: {fileID: 8973249789513816642}
   - component: {fileID: 3615207107387169886}
-  - component: {fileID: 476916540637937738}
-  - component: {fileID: 5521854713877315901}
-  - component: {fileID: 5033828951078609379}
   - component: {fileID: 8787457537390150840}
-  - component: {fileID: 1854948637955011096}
   - component: {fileID: 4139562674000432808}
   - component: {fileID: 387061072760365573}
+  - component: {fileID: 8050108183723115521}
   m_Layer: 7
   m_Name: Dragon
   m_TagString: Enemy
@@ -90,73 +87,6 @@ CapsuleCollider:
   m_Height: 2.9986687
   m_Direction: 1
   m_Center: {x: 0, y: 1.4826941, z: 0.048659325}
---- !u!114 &476916540637937738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56644589861250114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: isRun
-  - Type: 9
-    SynchronizeType: 2
-    Name: die
-  - Type: 4
-    SynchronizeType: 2
-    Name: ReStart
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
---- !u!114 &5521854713877315901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56644589861250114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
---- !u!114 &5033828951078609379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56644589861250114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 476916540637937738}
-  - {fileID: 5521854713877315901}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!195 &8787457537390150840
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -179,18 +109,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1854948637955011096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56644589861250114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fd834580877fd343a090f570563013d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &4139562674000432808
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -235,7 +153,7 @@ MonoBehaviour:
     currentState: 0
     isInitialized: 0
   damageEventChannel: {fileID: 11400000, guid: 9d6c4e0be67ba6c42a5c60e91040904e, type: 2}
-  _network: {fileID: 1854948637955011096}
+  _network: {fileID: 0}
   animator: {fileID: 8973249789513816642}
   rb: {fileID: 4139562674000432808}
   PlayerTarget: {fileID: 0}
@@ -246,6 +164,19 @@ MonoBehaviour:
   lod1AttackIntervalMultiplier: 3
   lod2FreezeAnimation: 1
   lod2DisableAttack: 1
+--- !u!114 &8050108183723115521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56644589861250114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b90df17af5547c4f894206d71d5de83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SimID: -1
 --- !u!1 &134451692055904465
 GameObject:
   m_ObjectHideFlags: 0

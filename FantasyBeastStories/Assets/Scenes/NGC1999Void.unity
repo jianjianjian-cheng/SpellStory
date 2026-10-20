@@ -35226,6 +35226,78 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 379129345}
   m_CullTransparentMesh: 1
+--- !u!1 &384561206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 384561207}
+  - component: {fileID: 384561209}
+  - component: {fileID: 384561208}
+  m_Layer: 0
+  m_Name: MonsterAoiSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &384561207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384561206}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.355213, y: 6.009205, z: 90.95812}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &384561208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384561206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68f4205ab4aaf3e49b7b34f8f695190f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typePrefabs:
+  - {fileID: 3480699876331511206, guid: 57525729c06505546ae848045aa1dd19, type: 3}
+  - {fileID: 1683610532524085646, guid: a49a796b1040e704aa26b030b40cb711, type: 3}
+--- !u!114 &384561209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384561206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a30569ceed154584b9a51ed386fdb91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aoiCamera: {fileID: 1108208121}
+  manualCellSize: 60
+  coverageMargin: 1.3
+  mapCenter: {x: 75, y: 75}
+  mapSize: {x: 150, y: 150}
+  typeEntries:
+  - poolName: Enemies/SkeletonRoot
+    typeIndex: 0
+    bigDot: 0
+  - poolName: Enemies/DragonRoot
+    typeIndex: 1
+    bigDot: 1
 --- !u!1 &386094100
 GameObject:
   m_ObjectHideFlags: 0
@@ -255166,3 +255238,4 @@ SceneRoots:
   - {fileID: 569798368}
   - {fileID: 1667991069}
   - {fileID: 1907002842}
+  - {fileID: 384561207}

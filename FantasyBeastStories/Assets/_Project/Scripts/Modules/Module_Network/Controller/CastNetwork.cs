@@ -8,6 +8,9 @@ using UnityEngine;
 using Controllers.Network;
 using UI;
 using Core.SharedModel;
+using Controllers.Task;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 namespace Controllers.Network
 {
@@ -100,9 +103,6 @@ namespace Controllers.Network
 
     // ==================== 伤害相关 ====================
 
-    /// <summary>
-    /// 广播伤害给所有客户端（由 ImpactCannon 调用）
-    /// </summary>
     public void BroadcastDamage(
         GameObject enemyObj,
         float damage,
@@ -112,42 +112,48 @@ namespace Controllers.Network
         Element element
     )
     {
-      // 添加防御性检查
-      if (this == null || gameObject == null)
-      {
-        Debug.LogWarning("[CastNetwork] 对象已销毁");
-        return;
-      }
-      PhotonView enemyView = enemyObj.GetComponent<PhotonView>();
-      if (enemyView == null)
-        return;
+      var enemyView = enemyObj.GetComponent<PhotonView>();
 
-      // 确保 photonView 有效
-      if (photonView == null)
+      // 老网络对象（Boss 等房间对象）：保留原 RPC 路径，行为不变
+      if (enemyView != null)
       {
-        Debug.LogWarning("[CastNetwork] photonView 为空");
+        photonView.RPC("RPC_DealDamage", RpcTarget.All, enemyView.ViewID, damage, isCritical, criticalMultiplier, hitPoint, (int)element);
+        photonView.RPC("RPC_ShowDamageNum", RpcTarget.All, damage, hitPoint, isCritical, criticalMultiplier);
         return;
       }
 
-      // 发给所有玩家：每个客户端通过事件通道分发伤害，EnemyBase.OnDamageReceived 校验 damgeTarget==gameObject 去重
-      photonView.RPC(
-          "RPC_DealDamage",
-          RpcTarget.All,
-          enemyView.ViewID,
-          damage,
-          isCritical,
-          criticalMultiplier,
-          hitPoint,
-          (int)element
-      );
-      photonView.RPC(
-          "RPC_ShowDamageNum",
-          RpcTarget.All,
-          damage,
-          hitPoint,
-          isCritical,
-          criticalMultiplier
-      );
+      // 新：AOI 怪物（无 PhotonView，凭 MonsterLink 定位）
+      var link = enemyObj.GetComponent<MonsterLink>();
+      if (link == null) return;
+
+      // 本地预测：命中者立刻看伤害数字（IsTest 下由 TakeDamage 的既有通道显示，避免双份）
+      float finalDamage = Mathf.Ceil(damage * (isCritical ? criticalMultiplier : 1f));
+      if (!EventChannelLocator.MainContainer.gameSettings.IsTest)
+      {
+        EventChannelLocator.MainContainer.matchSystem.damageDisplayChannel?.Raise(
+            DamageDisplayEventArgs.GetShared(finalDamage, hitPoint, isCritical));
+
+        // 非房主端：本地记伤害统计/任务进度（房主由 TakeDamage 全量记，避免重复）
+        if (!PhotonNetwork.IsMasterClient)
+        {
+          ServiceLocator.Get<MatchStatisticsManager>()?.RecordDamage(Mathf.RoundToInt(finalDamage));
+          ServiceLocator.Get<QuestTaskManager>()?.RecordDamage(Mathf.RoundToInt(finalDamage));
+        }
+      }
+
+      // 房主/IsTest：直接扣血；远程客户端：上报给房主
+      if (EventChannelLocator.MainContainer.gameSettings.IsTest || PhotonNetwork.IsMasterClient)
+      {
+        MonsterSimCore.Instance.ApplyHit(link.SimID, damage, isCritical, criticalMultiplier, element);
+      }
+      else
+      {
+        PhotonNetwork.RaiseEvent(
+            MonsterSimCore.EventCodeHit,
+            new object[] { (int)link.SimID, damage, isCritical, criticalMultiplier, (int)element },
+            new RaiseEventOptions { TargetActors = new[] { PhotonNetwork.MasterClient.ActorNumber } },
+            SendOptions.SendReliable);
+      }
     }
 
     /// <summary>

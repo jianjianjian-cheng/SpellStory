@@ -503,6 +503,10 @@ namespace Controllers.Battle
       }
 
       PlayerTarget = null;
+
+      // 池是"根壳+本体"结构：跑动的是本体，回收时把它拉回根，否则下次生成位置错乱
+      transform.localPosition = Vector3.zero;
+      transform.localRotation = Quaternion.identity;
     }
   }
 }

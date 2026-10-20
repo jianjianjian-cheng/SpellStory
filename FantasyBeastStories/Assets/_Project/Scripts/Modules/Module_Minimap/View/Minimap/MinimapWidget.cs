@@ -35,7 +35,7 @@ namespace UI
         [SerializeField] private Color teammateColor = Color.white;
         [SerializeField] private float teammateDotSize = 8f;
 
-        private readonly List<EnemyBase> _trackedEnemies = new();
+        private readonly List<MinimapFeedEntry> _trackedEnemies = new();
         private readonly List<MinimapDot> _activeDots = new();
         private readonly Stack<MinimapDot> _dotPool = new();
 
@@ -85,31 +85,14 @@ namespace UI
 
         private void Update()
         {
-            if (!_hasSubscribed)
-                SubscribeEvents();
-
             _timer += Time.deltaTime;
             if (_timer < updateInterval) return;
             _timer = 0f;
 
-            // 定期强制刷新，确保非主机端也能追踪到敌人
-            _forceRefreshTimer += updateInterval;
-            if (_forceRefreshTimer >= ForceRefreshInterval)
-            {
-                _forceRefreshTimer = 0f;
-                _needFullRefresh = true;
-            }
-
-            if (_needFullRefresh)
-            {
-                RefreshTrackedEnemies();
-                _needFullRefresh = false;
-            }
-
+            RefreshTrackedEnemies();
             RefreshTrackedTeammates();
             UpdateDotPositions();
         }
-
         private void OnPoolOperation(PoolOperationData data)
         {
             switch (data.operationType)
@@ -126,26 +109,13 @@ namespace UI
         private void RefreshTrackedEnemies()
         {
             _trackedEnemies.Clear();
-            var enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
-            foreach (var enemy in enemies)
-            {
-                if (enemy == null || enemy.IsDeadOrDying()) continue;
-                _trackedEnemies.Add(enemy);
-            }
+            _trackedEnemies.AddRange(MonsterSimCore.MinimapFeed);
 
-            // 同步 dot 数量
-            while (_activeDots.Count < _trackedEnemies.Count)
-            {
-                var dot = GetDot();
-                _activeDots.Add(dot);
-            }
-            while (_activeDots.Count > _trackedEnemies.Count)
-            {
-                int idx = _activeDots.Count - 1;
-                ReturnDot(_activeDots[idx]);
-                _activeDots.RemoveAt(idx);
-            }
+            // dot 数量同步（原样保留）
+            while (_activeDots.Count < _trackedEnemies.Count) { var dot = GetDot(); _activeDots.Add(dot); }
+            while (_activeDots.Count > _trackedEnemies.Count) { int idx = _activeDots.Count - 1; ReturnDot(_activeDots[idx]); _activeDots.RemoveAt(idx); }
         }
+
 
         private void UpdateDotPositions()
         {
@@ -172,23 +142,14 @@ namespace UI
 
             for (int i = 0; i < _trackedEnemies.Count && i < _activeDots.Count; i++)
             {
-                var enemy = _trackedEnemies[i];
-                if (enemy == null || enemy.IsDeadOrDying())
-                {
-                    _activeDots[i].SetVisible(false);
-                    continue;
-                }
+                var entry = _trackedEnemies[i];
+                _activeDots[i].SetColor(entry.big ? bossColor : enemyColor);
+                _activeDots[i].SetSize(entry.big ? bossDotSize : dotSize);
 
-                var enemyPos = enemy.transform.position;
-                var offset = new Vector2(enemyPos.x - playerPos.x, enemyPos.z - playerPos.z);
+                var offset = new Vector2(entry.pos.x - playerPos.x, entry.pos.z - playerPos.z);
                 var normalized = offset / mapRange;
-
-                // 超出范围贴边
-                if (normalized.magnitude > 1f)
-                    normalized = normalized.normalized;
-
-                var minimapPos = normalized * maxRadius;
-                _activeDots[i].SetPosition(minimapPos);
+                if (normalized.magnitude > 1f) normalized = normalized.normalized;
+                _activeDots[i].SetPosition(normalized * maxRadius);
                 _activeDots[i].SetVisible(true);
             }
 
